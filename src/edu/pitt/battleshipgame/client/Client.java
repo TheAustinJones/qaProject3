@@ -157,7 +157,7 @@ public class Client {
             }
             //Find where the other player moved
             Coordinate om = gi.getFeedback();
-
+            
             //Check if the game is ended
             if (gi.isGameOver()) {
                 break;
@@ -166,7 +166,13 @@ public class Client {
             //And apply it to our board
             if(om != null) //This is false the first attack.
                     myboard.doAttack(om);
-
+            
+            //Check to see if the other player sunk one of our ships
+            Ship omShip = myboard.getShipFromCoordinates(om);
+            if (omShip != null && omShip.isSunk()) {
+                System.out.println("The other player sunk your " + omShip.getName() + "!");
+            }
+            
             // Get the updated boards
 
             //gameBoards = gi.getBoards();

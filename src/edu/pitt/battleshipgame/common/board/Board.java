@@ -141,8 +141,8 @@ public class Board implements Serializable {
                     }
                 }
 		else if (showShips && theShips[row][col] != null) {
-                    String shipName = getShipNameFromCoordinates(new Coordinate(row, col));
-                    System.out.println("shipName:\t" + shipName + "\n");
+                    Ship ship = getShipFromCoordinates(new Coordinate(row, col));
+                    String shipName = ship.getName();
                     switch(shipName){
                         case("Carrier"):
                             boardRepresentation[row+1][col+1] = " C ";
@@ -178,14 +178,15 @@ public class Board implements Serializable {
         return sb.toString();
     }
     
-    public String getShipNameFromCoordinates(Coordinate c) {
+    public Ship getShipFromCoordinates(Coordinate c) {
         for (Ship s : shipList) {
             List<Coordinate> coordList = s.getCoordinates();
             for (Coordinate coord : coordList) {
-                if (coord.getRow() == c.getRow() && coord.getCol() == c.getCol())
-                    return s.getName();
+                if (c != null && coord.getRow() == c.getRow() && coord.getCol() == c.getCol()) {
+                    return s;
+                }
             }
         }
-        return "";
+        return null;
     }
 }
