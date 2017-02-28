@@ -9,11 +9,14 @@ import edu.pitt.battleshipgame.common.ships.Ship;
 
 public class GameTracker {
     public static final int MAX_PLAYERS = 2;
+    public final int MOVE_TIMEOUT = 30000;
+    public final int PLACE_TIMEOUT = 120000;
     private int registeredPlayers = 0;
     private ArrayList<Board> gameBoards;
     private Coordinate feedback; //The last player's attack to happen
     private GameState state = GameState.INIT;
     private int playerTurn = 0;
+    private long[] lastrequesttime = new long[2];
     Object lock;
     private boolean quit = false;
     private int loser = 0;
@@ -41,6 +44,7 @@ public class GameTracker {
 	if(registeredPlayers == MAX_PLAYERS){
 	    state=GameState.PLACEING;
 	}
+	lastrequesttime[registeredPlayers - 1] = System.currentTimeMillis();
         return registeredPlayers - 1;
     }
 
@@ -70,6 +74,15 @@ public class GameTracker {
     }
 
     public int getTurn(){
+	//This gets called continuously, so check to see if a player has taken too long here
+	long delta = System.currentTimeMillis() - lastrequesttime[playerTurn];
+	System.out.println("Delta time for" + playerTurn + ":" + delta);
+	if(delta > MOVE_TIMEOUT){
+	    System.out.println("Player " + playerTurn + "Has timed out!");
+	    loser = playerTurn;
+	    quit = true;
+	}
+	lastrequesttime[getOtherPlayerId(playerTurn)] = System.currentTimeMillis();
 	return playerTurn;
     }
 
@@ -92,6 +105,7 @@ public class GameTracker {
 	    System.out.println("Player " + playerID + " was cheating! they tried to attack where they couldn't!");
 	feedback = c;
 	System.out.printf("After attack was performed, player's boards are:\nPlayer 0:\n%s\nPlayer 1:\n%s",gameBoards.get(0),gameBoards.get(1));
+	lastrequesttime[playerTurn] = System.currentTimeMillis();
 	playerTurn = getOtherPlayerId(playerTurn);
 	return gameBoards.get(getOtherPlayerId(playerID)).doAttack(c);
     }
@@ -114,7 +128,12 @@ public class GameTracker {
 	    System.out.println("Setting state to playing");
 	    state = GameState.PLAYING;
 	}
-
+	if(System.currentTimeMillis() - lastrequesttime[playerID] > PLACE_TIMEOUT){
+	    System.out.println("player " + playerID + " took too long placeing their ships!");
+	    loser = playerID;
+	    quit = true;
+	}
+	lastrequesttime[playerID] = System.currentTimeMillis();
     }
     
     public void setBoards(ArrayList<Board> boards) {
