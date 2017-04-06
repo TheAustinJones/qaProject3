@@ -17,4 +17,13 @@ public class MoveResult implements Serializable {
 	hit = h;
 	sunk = s;
     }
+    
+    public String toString(){
+        if(sunk != null){
+            return String.valueOf(hit) + sunk.toString();
+        }
+        else{
+            return String.valueOf(hit);
+        }
+    }
 }

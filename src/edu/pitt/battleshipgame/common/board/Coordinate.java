@@ -8,7 +8,7 @@ public class Coordinate implements Serializable {
     private int row, col;
     private static final String formattingRules = "Coordinate format must be <A-J>:<1-10>";
     // Support for mapping from letters to numbers...
-    private static final HashMap<Character,Integer> columnMap = new HashMap<Character, Integer>(){{
+    public static final HashMap<Character,Integer> columnMap = new HashMap<Character, Integer>(){{
             put('A',0);
             put('B',1);
             put('C',2);
@@ -23,7 +23,7 @@ public class Coordinate implements Serializable {
     };
 
     // Support for mapping from numbers to letters
-    private static final char [] reverseColumnMap =
+    public static final char [] reverseColumnMap =
         { 'A','B','C','D','E','F','G','H','I','J'};
     
     /*

@@ -23,9 +23,9 @@ public abstract class Ship implements Serializable {
      * public static final int MAX_ALLOWED
      */
     
-    private int hitCount;
+    public int hitCount;
     // Keep a backreference to the board that this ship is placed on
-    private Board myBoard = null;
+    public Board myBoard = null;
     Coordinate start, end;
     
     public Ship(Coordinate start, Coordinate end, Board board) {
@@ -66,6 +66,10 @@ public abstract class Ship implements Serializable {
             }
         }
         return coordinates;
+    }
+    
+    public String toString(){
+        return (String)start.toString() + (String)end.toString() + String.valueOf(hitCount);
     }
     
     public boolean isSunk() {

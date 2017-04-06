@@ -14,14 +14,14 @@ public class Board implements Serializable {
     // game board. The moves array will be initialized to false and will
     // change to true when that move is made.
     //private ArrayList < ArrayList < Ship > > theShips;
-    private Ship [][] theShips;
-    private boolean [][] moves;
+    public Ship [][] theShips;
+    public boolean [][] moves;
 
     //Only use this on the client side to keep track of hits on your enemy's board.
-    private boolean [][] hits;
+    public boolean [][] hits;
     // Keep a list of all ships on this board for quick searching.
     LinkedList<Ship> shipList;
-    private String name;
+    public String name;
 
     public Board (String _name) {
         theShips = new Ship[BOARD_DIM][BOARD_DIM];
@@ -90,7 +90,7 @@ public class Board implements Serializable {
 	    if(s.getClass() == ship.getClass())
 		return false;
 
-	//Make sure there is not already a shit blocking our path
+	//Make sure there is not already a ship blocking our path
 	for(Coordinate c : ship.getCoordinates())
 	    if(theShips[c.getRow()][c.getCol()] != null)
 		return false;

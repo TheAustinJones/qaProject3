@@ -76,9 +76,18 @@ public class Client {
         System.out.println("Your board:");
         System.out.println(myboard.toString(true));
         //gi.setBoards(gameBoards);
-        while(gi.getState() == GameState.PLACEING)
+        while((gi.getState() == GameState.PLACEING) && gi.isGameOver()){
             Thread.yield();
-        gameLoop();
+        }
+        System.out.println("adsfasdfasd " + gi.isGameOver());
+        if(!gi.isGameOver()){
+            System.out.println("The Game is Over!");
+            System.out.println("Player " + gi.getWinner() + " has won!");
+            System.exit(0);
+        }
+        else{
+            gameLoop();
+        }
     }
 
     public static String get_server_address(){

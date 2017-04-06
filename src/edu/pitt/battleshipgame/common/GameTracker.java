@@ -52,7 +52,7 @@ public class GameTracker {
         switch (state) {
             case INIT:
             {
-                System.out.println("Player " + playerID + " is waiting for other players");
+                System.out.println("Player " + (playerID + 1) + " is waiting for other players");
                 while(registeredPlayers < MAX_PLAYERS)
 		    Thread.yield();
                 state = GameState.PLAYING;
@@ -76,9 +76,9 @@ public class GameTracker {
     public int getTurn(){
 	//This gets called continuously, so check to see if a player has taken too long here
 	long delta = System.currentTimeMillis() - lastrequesttime[playerTurn];
-	System.out.println("Delta time for" + playerTurn + ":" + delta);
+	System.out.println("Delta time for" + (playerTurn + 1) + ":" + delta);
 	if(delta > MOVE_TIMEOUT){
-	    System.out.println("Player " + playerTurn + "Has timed out!");
+	    System.out.println("Player " + (playerTurn  + 1)+ "Has timed out!");
 	    loser = playerTurn;
 	    quit = true;
 	}
@@ -120,7 +120,7 @@ public class GameTracker {
 
 	//Make sure we can place the ship
 	if(!canPlaceShipOnBoard(playerID,s))
-		System.out.println("Player " + playerID + " was cheating! they tried to palce a ship where they couldn't!");
+		System.out.println("Player " + (playerID + 1) + " was cheating! they tried to palce a ship where they couldn't!");
 	gameBoards.get(playerID).addShip(s);
 
 	//Check if we're done adding ships to the board
@@ -129,7 +129,7 @@ public class GameTracker {
 	    state = GameState.PLAYING;
 	}
 	if(System.currentTimeMillis() - lastrequesttime[playerID] > PLACE_TIMEOUT){
-	    System.out.println("player " + playerID + " took too long placeing their ships!");
+	    System.out.println("player " + (playerID + 1) + " took too long placing their ships!");
 	    loser = playerID;
 	    quit = true;
 	}
